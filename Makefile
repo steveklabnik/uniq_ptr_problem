@@ -10,13 +10,15 @@ default: build
 build:
 	pandoc -o index.html README.md
 
-check: gnu clang
+check: gnu clang rust
 
 gnu: code.cpp
 	g++ -std=c++14 -Wall -Wextra -g code.cpp -o code
-	 $(call EXPECTED_FAIL, ./code)
+	$(call EXPECTED_FAIL, ./code)
 
 clang: code.cpp
 	clang++ -std=c++14 -Wall -Wextra -g code.cpp -o code
-	 $(call EXPECTED_FAIL, ./code)
+	$(call EXPECTED_FAIL, ./code)
 
+rust: code.rs
+	$(call EXPECTED_FAIL, rustc code.rs)

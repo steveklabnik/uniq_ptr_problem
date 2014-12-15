@@ -42,7 +42,7 @@ Segmentation fault
 This happens because `move` sets `orig` to null, making this an example of
 undefined behavior.
 
-See [The C++11 standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2011/n3242.pdf), section 20.7.1 4:
+See [The C++11 standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2011/n3242.pdf), section `20.7.1 4`:
 
 > Additionally, `u` can, upon request, transfer ownership to another unique
 > pointer `u2`. Upon completion of such a transfer, the following
@@ -51,6 +51,8 @@ See [The C++11 standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2011
 > - `u.p` is equal to `nullptr`
 
 Hence, no warning, and hence, a null pointer dereference.
+
+The [C++14 standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3797.pd) uses the same language, but is in section `20.8.1 4` instead.
 
 [This HN comment](https://news.ycombinator.com/item?id=8751815)
 inspired me to finally write this down.

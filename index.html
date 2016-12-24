@@ -37,7 +37,7 @@ $ <span class="kw">./code</span>
 <p>The <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3797.pd">C++14 standard</a> uses the same language, but is in section <code>20.8.1 4</code> instead.</p>
 <p>The equivalent Rust program:</p>
 <pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">fn</span> main() {
-    <span class="kw">let</span> org = box <span class="dv">5i</span>;
+    <span class="kw">let</span> org = Box::new(<span class="dv">5</span>);
 
     <span class="ot">println!</span>(<span class="st">&quot;{}&quot;</span>, org);
 
@@ -47,19 +47,16 @@ $ <span class="kw">./code</span>
 }</code></pre>
 <p>gives an error when compiled:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">rustc</span> code.rs
-<span class="kw">code.rs</span>:8:20: 8:23 error: use of moved value: <span class="kw">`org`</span>
-<span class="kw">code.rs</span>:8     println!(<span class="st">&quot;{}&quot;</span>, org);
-                             ^<span class="kw">~~</span>
-<span class="kw">note</span>: in expansion of format_args!
-<span class="kw">&lt;std</span> macros<span class="kw">&gt;</span>:2:23: 2:77 note: expansion site
-<span class="kw">&lt;std</span> macros<span class="kw">&gt;</span>:1:1: 3:2 note: in expansion of println!
-<span class="kw">code.rs</span>:8:5: 8:25 note: expansion site
-<span class="kw">code.rs</span>:6:9: 6:15 note: <span class="kw">`org`</span> moved here because it has type <span class="kw">`Box&lt;</span>int<span class="kw">&gt;`</span>, which is moved by default
-<span class="kw">code.rs</span>:6     let stolen = org<span class="kw">;</span>
-                  ^<span class="kw">~~~~~</span>
-<span class="kw">code.rs</span>:6:9: 6:15 help: use <span class="kw">`ref`</span> to override
-<span class="kw">code.rs</span>:6     let stolen = org<span class="kw">;</span>
-                  ^<span class="kw">~~~~~</span>
-<span class="kw">error</span>: aborting due to previous error</code></pre>
+error[E0382]: use of moved value: `org`
+ --&gt; &lt;anon&gt;:8:20
+  |
+6 |     let stolen = org;
+  |         ------ value moved here
+7 | 
+8 |     println!("{}", org);
+  |                    ^^^ value used here after move
+  |
+  = note: move occurs because `org` has type `Box&lt;i32&gt;`, which does not implement the `Copy` trait
+</code></pre>
 <p>The Rust compiler itself understands move semantics, and therefore, knows that <code>org</code> is invalid after a move.</p>
 <p><a href="https://news.ycombinator.com/item?id=8751815">This HN comment</a> inspired me to finally write this down.</p>

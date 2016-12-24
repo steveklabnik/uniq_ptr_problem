@@ -1,5 +1,5 @@
 fn main() {
-    let org = box 5i;
+    let org = Box::new(5);
 
     println!("{}", org);
 
